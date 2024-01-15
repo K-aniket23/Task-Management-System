@@ -1,0 +1,37 @@
+task management sytem 
+admin and user 
+admin crud and user R
+
+1 admin
+employ i will create using username and password
+task assisn to user only by admin
+notification when user get task
+task status progress complete , not completed, user can set 
+
+
+login and signup
+login as admin
+login as user
+
+admin table ( id,name, username, password)
+employee table (userid, name, username, password, task, task id, task_status)
+task table (task id, task_name, task_status, userid)
+
+
+Admin: CRUD task, user and assign tasks      
+
+func:
+1 make new user
+2 assign task to user : see the list of user 
+see the task and then assign it
+3 create task
+4 see all task
+5 see user
+
+user: Read task 
+
+func:
+set task status: complete, 25%, 50%, 80%, by deafult not complete , he can update the task_status
+
+(notification) : user get notification push notification once he log in that he got a new task (mics)
+notification like a print statement that display the message you got a new task- task_name
