@@ -9,6 +9,7 @@ conn = sqlite3.connect('geeks2.db')
 cursor = conn.cursor() 
 
 # Creating table 
+# CREATE TABLE IF NOT EXISTS some_table (id INTEGER PRIMARY KEY AUTOINCREMENT, ...);
 table ="""CREATE TABLE STUDENT(NAME VARCHAR(255), CLASS VARCHAR(255), 
 SECTION VARCHAR(255));"""
 cursor.execute(table) 
