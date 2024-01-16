@@ -3,6 +3,7 @@ from manager import Manager
 
 #read task
 #set status
+# may be using a variable i can track the last login and notification
 
 class User:
     def __init__(self,db_manager):

@@ -33,3 +33,7 @@ class Database_tables:
 
         print("Tables Created or Already exist")
 
+    def create_admin(self):
+        self.db_manager.execute_command("""INSERT INTO ADMIN VALUES ('Aniket', 'aniketk','abcd1234')""")
+
+
