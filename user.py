@@ -6,8 +6,8 @@ from manager import Manager
 # may be using a variable i can track the last login and notification
 
 class User:
-    def __init__(self,db_manager):
-        self.db_manager=db_manager
+    def __init__(self):
+        self.db_manager=Manager()
 
     def Login_user(self,Username,Password):
         user_data=self.db_manager.print_output("""SELECT * FROM EMPLOYEE 

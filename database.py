@@ -2,8 +2,8 @@ import sqlite3
 from manager import Manager
 
 class Database_tables:
-    def __init__(self,db_manager):
-        self.db_manager=db_manager
+    def __init__(self):
+        self.db_manager=Manager()
 
     def create_table(self):
         # admin table ( id,name, username, password)
@@ -11,7 +11,7 @@ class Database_tables:
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         username TEXT UNIQUE NOT NULL, 
-        password TEXT NOT NULL);""")
+        password TEXT NOT NULL)""")
 
         # employee table (userid, name, username, password, task, task id, task_status)
 
@@ -34,7 +34,7 @@ class Database_tables:
     def create_admin(self):
         admin=self.db_manager.print_output("""SELECT * FROM ADMIN WHERE id='1'""")
         if admin is None:
-            self.db_manager.execute_command("""INSERT INTO ADMIN VALUES ('Aniket', 'aniketk','abcd1234')""")
+            self.db_manager.execute_command("""INSERT INTO ADMIN(name,username,password) VALUES ('Aniket', 'aniketk','abcd1234')""")
         
 
 

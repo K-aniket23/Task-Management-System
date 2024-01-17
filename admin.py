@@ -10,8 +10,8 @@ from manager import Manager
 # 6 update the task
 
 class Admin:
-    def __init__(self,db_manager):
-        self.db_manager=db_manager
+    def __init__(self):
+        self.db_manager=Manager()
 
     def Admin_Login(self,Username,Password):
         admin_data=self.db_manager.print_output("""SELECT * FROM ADMIN 

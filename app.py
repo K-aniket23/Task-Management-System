@@ -6,14 +6,14 @@ from user import User
 
 class TMS:
     def __init__(self):
-        self.db_manager=Manager
-        self.database=Database_tables
-        self.admin_manager=Admin
-        self.user_manager=User
+        self.db_manager=Manager()
+        self.table=Database_tables()
+        self.admin_manager=Admin()
+        self.user_manager=User()
 
-        self.database.create_table()
+        self.table.create_table()
 
-        self.database.create_admin()
+        self.table.create_admin()
 
     def main(self):
         
@@ -175,9 +175,9 @@ class TMS:
                 print("Enter a valid option")
 
 if __name__ == '__main__':
-    TMS()
-    TMS.main()
-    TMS.db_manager.close_connection()
+    app=TMS()
+    app.main()
+    app.db_manager.close_connection()
         
 
         
