@@ -12,6 +12,11 @@ from manager import Manager
 class Admin:
     def __init__(self,db_manager):
         self.db_manager=db_manager
+
+    def Admin_Login(self,Username,Password):
+        admin_data=self.db_manager.print_output("""SELECT * FROM ADMIN 
+                                          WHERE username=? AND password =?""",(Username,Password))
+        return admin_data[2],admin_data[3]
         
     def Create_new_user(self,name,username,password):
         #insert a new user in the employee table
@@ -25,18 +30,21 @@ class Admin:
                                         WHERE userid=?""",(user_id))
         print(f"User Deleted Successfully") 
 
-    def Create_task(self,task_name):
+    def Create_task(self,task_name,task_description):
         #insert a new task in the task table
-        self.db_manger.execute_command("""INSERT INTO TASK(task_name,task_status)
-                                       VALUE(?,'Not Complete')""", (task_name)) 
+        self.db_manger.execute_command("""INSERT INTO TASK(task_name, task_description, task_status)
+                                       VALUE(?,?,'Not Complete')""", (task_name,task_description)) 
         print(f"Task {task_name} Created Successfully") 
         
-    def Assign_task(self,task_name,userid):
-        self.db_manager.execute_command("""INSERT INTO TASK(task_name,task_status,UserID)
-                                         VALUE(?,'Not Complete',?)""", (task_name,userid))
-        print(f"Task {task_name} Assigned Successfully") 
+    def Assign_task(self,task_id,userid):
+        self.db_manager.execute_command("""UPDATE TASK
+                                        SET UserID=?,
+                                        WHERE taskid=?""", (task_id,userid))
+        print(f"Task {task_id} Assigned Successfully to User : {userid}") 
 
     def Update_task(self,task_name,task_status,taskid):
+        print("Available Task : \n")
+        self.See_all_tasks()
         self.db_manager.execute_command("""UPDATE TASK 
                                         SET task_name = ?,
                                         task_status =? 
@@ -51,6 +59,7 @@ class Admin:
 
     def See_all_users(self):
         self.db_manager.print_output("""SELECT * FROM EMPLOYEE""")
+        # for user in users:
 
     def See_all_tasks(self):
         self.db_manager.print_output("""SELECT * FROM TASK""")

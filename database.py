@@ -19,8 +19,7 @@ class Database_tables:
             userid INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-        );""")
+            password TEXT NOT NULL);""")
 
         # task table (task id, task_name, task_status, userid)
         self.db_manager.execute_command("""CREATE TABLE IF NOT EXISTS TASK(
@@ -28,12 +27,14 @@ class Database_tables:
             task_name TEXT NOT NULL,
             task_description TEXT NOT NULL,
             task_status TEXT NOT NULL,
-            UserID INTEGER REFERENCES EMPLOYEE(userid)
-        );""")
+            UserID INTEGER REFERENCES EMPLOYEE(userid));""")
 
         print("Tables Created or Already exist")
 
     def create_admin(self):
-        self.db_manager.execute_command("""INSERT INTO ADMIN VALUES ('Aniket', 'aniketk','abcd1234')""")
+        admin=self.db_manager.print_output("""SELECT * FROM ADMIN WHERE id='1'""")
+        if admin is None:
+            self.db_manager.execute_command("""INSERT INTO ADMIN VALUES ('Aniket', 'aniketk','abcd1234')""")
+        
 
 
