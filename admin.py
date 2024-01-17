@@ -44,18 +44,18 @@ class Admin:
         
     def Assign_task(self,task_id,userid):
         self.db_manager.execute_command("""UPDATE TASK
-                                        SET UserID=?,
-                                        WHERE taskid=?""", (task_id,userid))
+                                        SET UserID=?
+                                        WHERE taskid=?""", (userid,task_id))
         print(f"Task {task_id} Assigned Successfully to User : {userid}") 
 
-    def Update_task(self,task_name,task_status,taskid):
-        print("Available Task : \n")
-        self.See_all_tasks()
+    def Update_task(self,task_name,task_des,task_status,uid,taskid):
         self.db_manager.execute_command("""UPDATE TASK 
                                         SET task_name = ?,
-                                        task_status =? 
+                                        task_description=?,
+                                        task_status =?,
+                                        UserID =?
                                         WHERE taskid=?
-                                        """, (task_name,task_status,taskid))
+                                        """, (task_name,task_des,task_status,uid,taskid))
         print(f"Task {task_name} Updated Successfully") 
         
     def detete_task(self,taskid):
@@ -64,8 +64,14 @@ class Admin:
         print(f"Task Deleted Successfully") 
 
     def See_all_users(self):
-        self.db_manager.print_output("""SELECT * FROM EMPLOYEE""")
-        # for user in users:
+        users= self.db_manager.print_output("""SELECT * FROM EMPLOYEE""")
+        for user in users:
+            print(f"User ID : {user[0]} | Name : {user[1]} | Username : {user[2]} | Password : {user[3]}")
+        print()
 
     def See_all_tasks(self):
-        self.db_manager.print_output("""SELECT * FROM TASK""")
+        tasks=self.db_manager.print_output("""SELECT * FROM TASK""")
+        for task in tasks:
+            print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]} | Assigned to User with User ID: {task[4] if task[4] is not None else 'None'}")
+
+        print()
