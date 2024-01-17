@@ -15,13 +15,19 @@ class Admin:
 
     def Admin_Login(self,Username,Password):
         admin_data=self.db_manager.print_output("""SELECT * FROM ADMIN 
-                                          WHERE username=? AND password =?""",(Username,Password))
-        return admin_data[2],admin_data[3]
+                                                WHERE username=? AND password =?""",(Username,Password))
+        if admin_data:
+
+            u=admin_data[0][2]
+            p=admin_data[0][3]
+            return u,p
+        else:
+            print("Enter the Correct Username and Password")
         
     def Create_new_user(self,name,username,password):
         #insert a new user in the employee table
         self.db_manager.execute_command("""INSERT INTO EMPLOYEE(name, username, password) 
-                                   VALUE (?,?,?)""",(name,username,password))
+                                   VALUES (?,?,?)""",(name,username,password))
         print(f"User Named {name} Created Successfully!")
 
     def Delete_user(self,user_id):
@@ -32,8 +38,8 @@ class Admin:
 
     def Create_task(self,task_name,task_description):
         #insert a new task in the task table
-        self.db_manger.execute_command("""INSERT INTO TASK(task_name, task_description, task_status)
-                                       VALUE(?,?,'Not Complete')""", (task_name,task_description)) 
+        self.db_manager.execute_command("""INSERT INTO TASK(task_name, task_description, task_status)
+                                       VALUES(?,?,'Not Complete')""", (task_name,task_description)) 
         print(f"Task {task_name} Created Successfully") 
         
     def Assign_task(self,task_id,userid):

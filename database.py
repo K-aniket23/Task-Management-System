@@ -29,12 +29,19 @@ class Database_tables:
             task_status TEXT NOT NULL,
             UserID INTEGER REFERENCES EMPLOYEE(userid));""")
 
-        print("Tables Created or Already exist")
-
     def create_admin(self):
-        admin=self.db_manager.print_output("""SELECT * FROM ADMIN WHERE id='1'""")
-        if admin is None:
-            self.db_manager.execute_command("""INSERT INTO ADMIN(name,username,password) VALUES ('Aniket', 'aniketk','abcd1234')""")
+        admins = self.db_manager.print_output("SELECT * FROM ADMIN")
+
+        if not admins:
+            # If no admins exist, create the default admin
+            self.db_manager.execute_command(
+                """INSERT INTO ADMIN(name, username, password) VALUES ('Aniket', 'aniketk', 'abcd1234')"""
+            )
+            print("Admin created or already exists.")
+        else:
+            print("Admins already exist.")
+
+        
         
 
 
