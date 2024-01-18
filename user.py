@@ -9,6 +9,7 @@ class User:
     def __init__(self):
         self.db_manager=Manager()
 
+
     def Login_user(self,Username,Password):
         user_data=self.db_manager.print_output("""SELECT * FROM EMPLOYEE 
                                           WHERE username=? AND password =?""",(Username,Password))
@@ -16,6 +17,7 @@ class User:
             u=user_data[0][2]
             p=user_data[0][3]
             id=user_data[0][0]
+
             return u,p,id
         else:
             print("something went wrong")
@@ -40,3 +42,23 @@ class User:
             print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}")
         print()
         
+    def Notification(self,userid):
+        user_data=self.db_manager.print_output('''SELECT * FROM TASK WHERE UserID=?''',(userid))
+        task_arr = []  
+        for task in user_data:
+            task_arr.append([str(task[0]), task[1], str(task[4])])
+
+        if len(task_arr)==0:
+            print("No Task Yet, Enjoy")
+
+        for i in range(len(task_arr)):
+            if task_arr[i][2]=='1':
+                print(f"You Got a Task Named : {task_arr[i][1]}, Task ID : {task_arr[i][0]}")
+                self.db_manager.execute_command("""UPDATE TASK
+                                            SET task_seen=0
+                                            WHERE taskid=?""",(task_arr[i][0]))
+            else:
+                print("No Task Yet, Enjoy")
+        
+
+

@@ -27,6 +27,7 @@ class Database_tables:
             task_name TEXT NOT NULL,
             task_description TEXT NOT NULL,
             task_status TEXT NOT NULL,
+            task_seen INTEGER NOT NULL,
             UserID INTEGER REFERENCES EMPLOYEE(userid));""")
 
     def create_admin(self):
@@ -37,9 +38,7 @@ class Database_tables:
             self.db_manager.execute_command(
                 """INSERT INTO ADMIN(name, username, password) VALUES ('Aniket', 'aniketk', 'abcd1234')"""
             )
-            print("Admin created or already exists.")
-        else:
-            print("Admins already exist.")
+
 
         
         

@@ -102,7 +102,6 @@ class TMS:
 
     def Admin_menu(self):
         while True:
-
             print("Enter the option ")
             print("1 : Create a New User")
             print("2 : Delete a Existing User")
@@ -140,6 +139,7 @@ class TMS:
 
     def User_menu(self,id):
         while True:
+            self.user_manager.Notification(id)
             print("Enter the option ")
             print("1 : Update the Status of your Task")
             print("2 : Read all your Assigned Tasks")
@@ -184,7 +184,6 @@ class TMS:
             print("Please Enter a Valid Username and Password\n")
 
         
-
     
 if __name__ == '__main__':
     app=TMS()

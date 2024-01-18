@@ -38,8 +38,8 @@ class Admin:
 
     def Create_task(self,task_name,task_description):
         #insert a new task in the task table
-        self.db_manager.execute_command("""INSERT INTO TASK(task_name, task_description, task_status)
-                                       VALUES(?,?,'Not Complete')""", (task_name,task_description)) 
+        self.db_manager.execute_command("""INSERT INTO TASK(task_name, task_description, task_status, task_seen)
+                                       VALUES(?,?,'Not Complete','1')""", (task_name,task_description)) 
         print(f"Task {task_name} Created Successfully") 
         
     def Assign_task(self,task_id,userid):
@@ -47,6 +47,7 @@ class Admin:
                                         SET UserID=?
                                         WHERE taskid=?""", (userid,task_id))
         print(f"Task {task_id} Assigned Successfully to User : {userid}") 
+
 
     def Update_task(self,task_name,task_des,task_status,uid,taskid):
         self.db_manager.execute_command("""UPDATE TASK 
@@ -71,7 +72,7 @@ class Admin:
             i=1
             task_assigned=False
             for task in tasks:  
-                if str(task[4])==uid:
+                if str(task[5])==uid:
                     if not task_assigned:
                         print(f"User ID : {user[0]} | Name : {user[1]} | Username : {user[2]} | Password : {user[3]} | Assigned Tasks : ")
                         task_assigned=True
@@ -86,5 +87,5 @@ class Admin:
     def See_all_tasks(self):
         tasks=self.db_manager.print_output("""SELECT * FROM TASK""")
         for task in tasks:
-            print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]} | Assigned to User with User ID: {task[4] if task[4] is not None else 'None'}")
+            print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]} | Assigned to User with User ID: {task[5] if task[5] is not None else 'None'}")
         print()
