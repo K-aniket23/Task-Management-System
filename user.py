@@ -12,13 +12,19 @@ class User:
     def Login_user(self,Username,Password):
         user_data=self.db_manager.print_output("""SELECT * FROM EMPLOYEE 
                                           WHERE username=? AND password =?""",(Username,Password))
-        return user_data[2],user_data[3],user_data[0]
+        if user_data is not None:
+            u=user_data[0][2]
+            p=user_data[0][3]
+            id=user_data[0][0]
+            return u,p,id
+        else:
+            print("something went wrong")
 
     def Update_task_status(self,taskid,new_status,userid):
-        user_data=self.db_manager.print_output('''SELECT * FROM TASK WHERE UserID=?'''(userid))
+        user_data=self.db_manager.print_output('''SELECT * FROM TASK WHERE UserID=?''',(userid))
         task_arr = []  
-        for row in user_data:
-            task_arr.append(int(row[0]))  
+        for task in user_data:
+            task_arr.append(str(task[0]))
         if taskid in task_arr:
             self.db_manager.execute_command("""UPDATE TASK
                                             SET task_status=?
@@ -28,5 +34,9 @@ class User:
             print("Please Enter the Task that are asssigned to you!")
     
     def Read_task(self,Userid):
-        self.db_manager.print_output("""SELECT * FROM TASK 
+        tasks=self.db_manager.print_output("""SELECT * FROM TASK 
                                 WHERE UserID=?""",(Userid))
+        for task in tasks:
+            print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}")
+        print()
+        

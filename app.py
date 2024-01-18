@@ -61,18 +61,18 @@ class TMS:
         self.See_all_Tasks()
         print("Available User to Assign a Task : ")
         self.See_all_Users()
-        taskid=int(input("Enter the Task ID : "))
-        user_id=int(input("Enter the User ID to assign the task : "))
+        taskid=input("Enter the Task ID : ")
+        user_id=input("Enter the User ID to assign the task : ")
         self.admin_manager.Assign_task(taskid,user_id)
 
     def update_task(self):
         print("Available Task : ")
         self.See_all_Tasks()
-        taskid=int(input("Enter the Task ID for updating the Task : "))
+        taskid=input("Enter the Task ID for updating the Task : ")
         task_name=input("Enter the New Task : ")
         task_des=input("Enter the New Description : ")
         task_status=input("Enter the New Status of the Task : ")
-        uid=int(input("Enter the New User whom to assign this task : "))
+        uid=input("Enter the New User whom to assign this task : ")
         self.admin_manager.Update_task(task_name,task_des,task_status,uid,taskid)
 
     def delete_task(self):
@@ -90,7 +90,7 @@ class TMS:
     #user functions
             
     def update_task_status(self,id):
-        taskid=int(input("Enter the Task ID to Update : "))
+        taskid=input("Enter the Task ID to Update : ")
         status=input("Enter the New Status of the Task : ")
         self.user_manager.Update_task_status(taskid,status,id)
 
@@ -177,13 +177,14 @@ class TMS:
         password=input("Enter the Password : ")
         u,p,id=self.user_manager.Login_user(username,password)
         if u==username and p==password:
-            print("User Login Successfully\n")
-            self.User_menu(id)
+            print(f"User Login Successfully with id : {id}\n")
+        
+            self.User_menu(str(id))
         else:
             print("Please Enter a Valid Username and Password\n")
 
         
-        
+
     
 if __name__ == '__main__':
     app=TMS()

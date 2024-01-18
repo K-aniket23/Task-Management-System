@@ -73,5 +73,4 @@ class Admin:
         tasks=self.db_manager.print_output("""SELECT * FROM TASK""")
         for task in tasks:
             print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]} | Assigned to User with User ID: {task[4] if task[4] is not None else 'None'}")
-
         print()
