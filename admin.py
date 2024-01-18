@@ -66,7 +66,21 @@ class Admin:
     def See_all_users(self):
         users= self.db_manager.print_output("""SELECT * FROM EMPLOYEE""")
         for user in users:
-            print(f"User ID : {user[0]} | Name : {user[1]} | Username : {user[2]} | Password : {user[3]}")
+            uid=str(user[0])
+            tasks=self.db_manager.print_output("""SELECT * FROM TASK WHERE UserID = ?""",(uid))
+            i=1
+            task_assigned=False
+            for task in tasks:  
+                if str(task[4])==uid:
+                    if not task_assigned:
+                        print(f"User ID : {user[0]} | Name : {user[1]} | Username : {user[2]} | Password : {user[3]} | Assigned Tasks : ")
+                        task_assigned=True
+                    print(f"  | {i} :- Task ID : {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}")
+                    i+=1
+            if not task_assigned:
+                    
+                print(f"User ID : {user[0]} | Name : {user[1]} | Username : {user[2]} | Password : {user[3]} | Assigned Tasks : No Task Assigned Yet")
+            print()
         print()
 
     def See_all_tasks(self):
