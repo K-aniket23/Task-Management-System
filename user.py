@@ -26,6 +26,8 @@ class User:
         user_data=self.db_manager.print_output('''SELECT * FROM TASK WHERE UserID=?''',(userid))
         task_arr = []  
         for task in user_data:
+            print("Tasks Assigned to you : ")
+            print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}")
             task_arr.append(str(task[0]))
         if taskid in task_arr:
             self.db_manager.execute_command("""UPDATE TASK
@@ -39,7 +41,11 @@ class User:
         tasks=self.db_manager.print_output("""SELECT * FROM TASK 
                                 WHERE UserID=?""",(Userid))
         for task in tasks:
-            print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}")
+            if task[4]=='1':
+                print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}  ~~~~ New Task")
+            else:
+                print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}")
+
         print()
         
     def Notification(self,userid):
@@ -53,12 +59,12 @@ class User:
 
         for i in range(len(task_arr)):
             if task_arr[i][2]=='1':
-                print(f"You Got a Task Named : {task_arr[i][1]}, Task ID : {task_arr[i][0]}")
+                print(f"~~ Notification ~~ : You Got a Task Named : {task_arr[i][1]}, Task ID : {task_arr[i][0]}, Please check Your Task List")
                 self.db_manager.execute_command("""UPDATE TASK
                                             SET task_seen=0
                                             WHERE taskid=?""",(task_arr[i][0]))
             else:
-                print("No Task Yet, Enjoy")
+                print("No New Task Yet, You can Complete the already assigned tasks")
         
 
 
