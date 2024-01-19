@@ -11,7 +11,7 @@ class User:
 
     def task_data(self,userid):
         try:
-            tasks=self.db_manager.print_output('''SELECT * FROM TASK WHERE UserID=?''',(userid))
+            tasks=self.db_manager.print_output('''SELECT * FROM TASK WHERE UserID=?''',([userid]))
             return tasks
         except Exception as e:
             print(f"Error, Please check userid Carefully : Reason : {e}\n")
@@ -30,7 +30,7 @@ class User:
 
     def Update_task_status(self,taskid,new_status,userid):
         try:
-            tasks=self.task_data([userid])
+            tasks=self.task_data(userid)
             task_arr = []  
             for task in tasks:
                 task_arr.append(str(task[0]))
@@ -38,16 +38,16 @@ class User:
                 self.db_manager.execute_command("""UPDATE TASK
                                                 SET task_status=?
                                                 WHERE taskid=?""",(new_status,taskid)) 
-                print(f"Task Updated Successfully") 
+                print(f"Task Updated Successfully\n") 
             else:
-                print("Please Enter the Task that are asssigned to you!")
+                print("Please Enter the Task that are asssigned to you!\n")
 
         except Exception as e:
             print(f"Error, Please check taskid,new_status,userid details Carefully for update the task : Reason : {e}\n")
     
     def Read_task(self,Userid):
         try:
-            tasks=self.task_data([Userid])
+            tasks=self.task_data(Userid)
             for task in tasks:
                 if task[4]==2:
                     print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}              ~~~~ New Task")
@@ -64,7 +64,7 @@ class User:
         
     def Notification(self,userid):
         try:
-            tasks=self.task_data([userid])
+            tasks=self.task_data(userid)
             task_arr = []  
             for task in tasks:
                 task_arr.append([str(task[0]), task[1], str(task[4])])

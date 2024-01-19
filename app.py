@@ -66,14 +66,66 @@ class TMS:
         self.admin_manager.Assign_task(taskid,user_id)
 
     def update_task(self):
-        print("Available Task : ")
-        self.See_all_Tasks()
-        taskid=input("Enter the Task ID for updating the Task : ")
-        task_name=input("Enter the New Task : ")
-        task_des=input("Enter the New Description : ")
-        task_status=input("Enter the New Status of the Task : ")
-        uid=input("Enter the New User whom to assign this task : ")
-        self.admin_manager.Update_task(task_name,task_des,task_status,uid,taskid)
+        try:
+            print("Available Task : ")
+            self.See_all_Tasks()
+            taskid=input("Enter the Task ID for updating the Task : ")
+            task=self.admin_manager.find_task(taskid)
+            if task:
+                print("Set the Task Name : Choose the option")
+                print("1 : Keep it same")
+                print("2 : Set a New one\n")
+                choice=input("Enter your Choice : ")
+                if choice=='1':
+                    task_name=task[0][1]
+                elif choice=='2':
+                    task_name=input("Enter the New Task : ")
+                else:
+                    print("Please Enter the Correct Option\n")
+                
+                print("Set the Task Description : Choose the option")
+                print("1 : Keep it same")
+                print("2 : Set a New one\n")
+                choice=input("Enter your Choice : ")
+                if choice=='1':
+                    task_des=task[0][2]
+                elif choice=='2':
+                    task_des=input("Enter the New Description : ")
+                else:
+                    print("Please Enter the Correct Option\n")
+
+                print("Set the Status : Choose the option")
+                print("1 : Started")
+                print("2 : In Progress- in mid way ")
+                print("3 : Completed")
+                print("4 : Not Complete\n")
+                choice=input("Enter the New Status of the Task : ")
+                if choice=='1':
+                    task_status="Started"
+                elif choice=='2':
+                    task_status="In Progress"
+                elif choice=='3':
+                    task_status="Completed"
+                elif choice=='4':
+                    task_status="Not Complete"
+                else:
+                    print("Please Enter the Correct Option\n")
+                
+                print("Set the User whom to assign this task : Choose the option")
+                print("1 : Keep it same")
+                print("2 : Set a New one\n")
+                choice=input("Enter your Choice : ")
+                if choice=='1':
+                    uid=task[0][5]
+                elif choice=='2':
+                    uid=input("Enter the New User whom to assign this task : ")
+                else:
+                    print("Please Enter the Correct Option\n")
+                self.admin_manager.Update_task(task_name,task_des,task_status,uid,taskid)
+            else:
+                print("Please Enter a Valid Task ID\n")
+        except Exception as e:
+            print(f"Something Went Wrong : Reason : {e}\n")
 
     def delete_task(self):
         taskid=input("Enter the Task ID to Delete : ")
@@ -107,7 +159,7 @@ class TMS:
         elif choice=='3':
             status="Completed"
         else:
-            print("Please Enter the Correct Option")
+            print("Please Enter the Correct Option\n")
         self.user_manager.Update_task_status(taskid,status,id)
 
     def read_task(self,id):

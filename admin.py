@@ -77,7 +77,7 @@ class Admin:
 
         
     def Assign_task(self,task_id,userid):
-        # try:
+        try:
             task=self.find_task(task_id)
             user= self.find_user(userid)
             if task and user:
@@ -94,14 +94,12 @@ class Admin:
                 print(f"Task {task_id} Assigned Successfully to User : {userid}\n") 
             else:
                 print("Please Enter a Valid User ID or Task ID\n")
-        # except Exception as e:
-        #     print(f"Something Went Wrong : Reason : {e}\n")
+        except Exception as e:
+            print(f"Something Went Wrong : Reason : {e}\n")
 
     def Update_task(self,task_name,task_des,task_status,uid,taskid):
-        # try:
-            task=self.find_task(taskid)
-            if task:
-                self.db_manager.execute_command("""UPDATE TASK 
+        try:
+            self.db_manager.execute_command("""UPDATE TASK 
                                                 SET task_name = ?,
                                                 task_description=?,
                                                 task_status =?,
@@ -109,11 +107,9 @@ class Admin:
                                                 UserID =?
                                                 WHERE taskid=?
                                                 """, (task_name,task_des,task_status,uid,taskid))
-                print(f"Task {task_name} Updated Successfully\n") 
-            else:
-                print("Please Enter a Valid Task ID")
-        # except Exception as e:
-        #     print(f"Something Went Wrong : Reason : {e}\n")
+            print(f"Task {task_name} Updated Successfully\n") 
+        except Exception as e:
+            print(f"Something Went Wrong : Reason : {e}\n")
         
     def detete_task(self,taskid):
         try:
@@ -132,7 +128,7 @@ class Admin:
             users= self.db_manager.print_output("""SELECT * FROM EMPLOYEE""")
             for user in users:
                 uid=str(user[0])
-                tasks=self.db_manager.print_output("""SELECT * FROM TASK WHERE UserID = ?""",([uid]))
+                tasks=self.user_manager.task_data(uid)
                 i=1
                 task_assigned=False
                 for task in tasks:  

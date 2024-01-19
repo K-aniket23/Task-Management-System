@@ -55,8 +55,4 @@ admin hardcode
 
 
 in menu exit
-redunnacy
 docmentation
-update task _name
-
-update task -status
