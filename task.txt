@@ -52,7 +52,11 @@ notification last login thing
 tables should not be created again again take care of that 
 admin hardcode
 
-task description 
-database edit
 
-task arr to display
+
+in menu exit
+redunnacy
+docmentation
+update task _name
+
+update task -status

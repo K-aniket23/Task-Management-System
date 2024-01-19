@@ -77,7 +77,10 @@ class TMS:
 
     def delete_task(self):
         taskid=input("Enter the Task ID to Delete : ")
-        self.admin_manager.detete_task(taskid)
+        if taskid=='0':
+            print("Please Enter a Valid TaskID")
+        else:
+            self.admin_manager.detete_task(taskid)
         
     def See_all_Users(self):
         print("These are the Available Users : ")
@@ -90,8 +93,21 @@ class TMS:
     #user functions
             
     def update_task_status(self,id):
+        self.read_task(id)
         taskid=input("Enter the Task ID to Update : ")
-        status=input("Enter the New Status of the Task : ")
+        print(" ~~~~Set the New Status : ~~~~")
+        print("1 : Started")
+        print("2 : In Progress- in mid way ")
+        print("3 : Completed\n")
+        choice=input("Enter the New Status : ")
+        if choice=='1':
+            status="Started"
+        elif choice=='2':
+            status="In Progress"
+        elif choice=='3':
+            status="Completed"
+        else:
+            print("Please Enter the Correct Option")
         self.user_manager.Update_task_status(taskid,status,id)
 
     def read_task(self,id):
@@ -138,8 +154,7 @@ class TMS:
                 print("Enter a valid option\n")
 
     def User_menu(self,id):
-        while True:
-            self.user_manager.Notification(id)
+        while True: 
             print("Enter the option ")
             print("1 : Update the Status of your Task")
             print("2 : Read all your Assigned Tasks")
@@ -157,31 +172,33 @@ class TMS:
             else:
                 print("Enter a valid option\n")
 
-
-
         #login options
 
     def admin_login(self):
-        username=input("Enter the Username : ")
-        password=input("Enter the Password : ")
-        u,p=self.admin_manager.Admin_Login(username,password)
-        if u==username and p==password:
-            print("Admin Login Successfully\n")
-            self.Admin_menu()
-        else:
+        try:
+            username=input("Enter the Username : ")
+            password=input("Enter the Password : ")
+            u,p=self.admin_manager.Admin_Login(username,password)
+            if u==username and p==password:
+                print("Admin Login Successfully\n")
+                self.Admin_menu()
+        except TypeError:
             print("Please Enter a Valid Username and Password\n")
 
 
     def user_login(self):
-        username=input("Enter the Username : ")
-        password=input("Enter the Password : ")
-        u,p,id=self.user_manager.Login_user(username,password)
-        if u==username and p==password:
-            print(f"User Login Successfully with id : {id}\n")
-        
-            self.User_menu(str(id))
-        else:
-            print("Please Enter a Valid Username and Password\n")
+        try:
+            username=input("Enter the Username : ")
+            password=input("Enter the Password : ")
+            u,p,id=self.user_manager.Login_user(username,password)
+            if (u,p,id) is not None:
+                print(f"User Login Successfully with id : {id}\n")
+                self.user_manager.Notification(str(id))
+                self.User_menu(str(id))
+            else:
+                print("Please Enter a Valid Username and Password\n")
+        except TypeError:
+            print(f"Please Enter a Valid Username and Password\n")
 
         
     

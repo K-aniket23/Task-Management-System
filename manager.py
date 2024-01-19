@@ -20,14 +20,12 @@ class Manager:
             self.cursor.execute(query)
         self.conn.commit()
 
-
-    def print_output(self,query,param=None):
+    def print_output(self,query,param=None):   
         if param:
             self.cursor.execute(query,param)
         else:
             self.cursor.execute(query)
         return self.cursor.fetchall()
-
 
     def close_connection(self):
         self.conn.close()
