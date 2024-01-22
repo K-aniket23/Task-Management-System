@@ -6,6 +6,9 @@ from manager import Manager
 # may be using a variable i can track the last login and notification
 
 class User:
+    taskSeen0='0'
+    taskSeen2='2'
+
     def __init__(self):
         self.db_manager=Manager()
 
@@ -16,7 +19,7 @@ class User:
         except Exception as e:
             print(f"Error, Please check userid Carefully : Reason : {e}\n")
 
-    def Login_user(self,Username,Password):
+    def login_user(self,Username,Password):
         user_data=self.db_manager.print_output("""SELECT * FROM EMPLOYEE 
                                                 WHERE username=? AND password =?""",(Username,Password))
         if user_data:
@@ -28,7 +31,7 @@ class User:
         else:
             print("something went wrong Please Check your ID and Password")
 
-    def Update_task_status(self,taskid,new_status,userid):
+    def update_task_status(self,taskid,new_status,userid):
         try:
             tasks=self.task_data(userid)
             task_arr = []  
@@ -45,15 +48,15 @@ class User:
         except Exception as e:
             print(f"Error, Please check taskid,new_status,userid details Carefully for update the task : Reason : {e}\n")
     
-    def Read_task(self,Userid):
+    def read_task(self,Userid):
         try:
             tasks=self.task_data(Userid)
             for task in tasks:
                 if task[4]==2:
                     print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}              ~~~~ New Task")
                     self.db_manager.execute_command("""UPDATE TASK
-                                                SET task_seen=0
-                                                WHERE taskid=?""",([str(task[0])]))
+                                                SET task_seen=?
+                                                WHERE taskid=?""",(self.taskSeen0,str(task[0])))
 
                 else:
                     print(f"Task ID: {task[0]} | Task Name: {task[1]} | Task Description: {task[2]} | Task Status: {task[3]}")
@@ -62,7 +65,7 @@ class User:
         except Exception as e:
             print(f"Error, Please check userid Carefully to read all the Tasks: Reason : {e}\n")
         
-    def Notification(self,userid):
+    def notification(self,userid):
         try:
             tasks=self.task_data(userid)
             task_arr = []  
@@ -75,8 +78,8 @@ class User:
                 if task_arr[i][2]=='1':
                     print(f"~~ Notification ~~ : You Got a Task Named : {task_arr[i][1]}, Task ID : {task_arr[i][0]}, Please check Your Task List for More Detail\n")
                     self.db_manager.execute_command("""UPDATE TASK
-                                                    SET task_seen=2
-                                                    WHERE taskid=?""",([task_arr[i][0]]))
+                                                    SET task_seen=?
+                                                    WHERE taskid=?""",(self.taskSeen2,task_arr[i][0]))
                     check=1
             if check==0:
                 print(" ~~ No New Task Yet, You can Complete the already assigned tasks if any!\n")

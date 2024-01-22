@@ -1,7 +1,7 @@
 import sqlite3 
 from manager import Manager
 
-class Database_tables:
+class DatabaseTables:
     def __init__(self):
         self.db_manager=Manager()
 

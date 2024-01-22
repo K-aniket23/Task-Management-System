@@ -56,3 +56,5 @@ admin hardcode
 
 in menu exit
 docmentation
+
+variableCase method_case ClassOne ENUMS

@@ -11,6 +11,9 @@ from user import User
 # 6 update the task
 
 class Admin:
+    task_not_complete='Not Complete'
+    task_seen='1'
+
     def __init__(self):
         self.db_manager=Manager()
         self.user_manager=User()
@@ -29,7 +32,7 @@ class Admin:
         except Exception as e:
                 print(f"Something Went Wrong in finding task : Reason : {e}\n")
     
-    def Admin_Login(self,Username,Password):
+    def admin_login(self,Username,Password):
         admin_data=self.db_manager.print_output("""SELECT * FROM ADMIN 
                                                 WHERE username=? AND password =?""",(Username,Password))
         if admin_data:
@@ -40,7 +43,7 @@ class Admin:
         else:
             print("Enter the Correct Username and Password")
         
-    def Create_new_user(self,name,username,password):
+    def create_new_user(self,name,username,password):
         #insert a new user in the employee table
         try:
             self.db_manager.execute_command("""INSERT INTO EMPLOYEE(name, username, password) 
@@ -49,7 +52,7 @@ class Admin:
         except sqlite3.IntegrityError:
             print(f"Error, Username is Already Taken, Please Use Different Username\n")
     
-    def Delete_user(self,user_id):
+    def delete_user(self,user_id):
         try:
             user=self.find_user(user_id)
             if user:
@@ -59,24 +62,24 @@ class Admin:
                                                             WHERE UserID=?""",([user_id]))
                 self.db_manager.execute_command("""DELETE FROM EMPLOYEE
                                                     WHERE userid=?""",([user_id]))
-            else:
-                print(f"User Deleted Successfully\n")   
-            print("Error, Please Enter The Correct User ID\n")
+                print(f"User Deleted Successfully\n") 
+            else:                 
+                print("Error, Please Enter The Correct User ID\n")
 
         except Exception as e:
             print(f"Something Went Wrong : Reason : {e}\n")   
 
-    def Create_task(self,task_name,task_description):
+    def create_task(self,task_name,task_description):
         #insert a new task in the task table
         try:
             self.db_manager.execute_command("""INSERT INTO TASK(task_name, task_description, task_status, task_seen)
-                                        VALUES(?,?,'Not Complete','1')""", (task_name,task_description)) 
+                                        VALUES(?,?,?,?)""", (task_name,task_description,self.task_not_complete,self.task_seen)) 
             print(f"Task {task_name} Created Successfully\n") 
         except Exception as e:
             print(f"Something Went Wrong : Reason : {e}\n") 
 
         
-    def Assign_task(self,task_id,userid):
+    def assign_task(self,task_id,userid):
         try:
             task=self.find_task(task_id)
             user= self.find_user(userid)
@@ -85,8 +88,8 @@ class Admin:
                     pass
                 else:
                     self.db_manager.execute_command("""UPDATE TASK
-                                                    SET task_seen=1
-                                                    WHERE taskid=?""",([task_id]))
+                                                    SET task_seen=?
+                                                    WHERE taskid=?""",(self.task_seen,task_id))
 
                 self.db_manager.execute_command("""UPDATE TASK
                                                 SET UserID=?
@@ -97,16 +100,16 @@ class Admin:
         except Exception as e:
             print(f"Something Went Wrong : Reason : {e}\n")
 
-    def Update_task(self,task_name,task_des,task_status,uid,taskid):
+    def update_task(self,task_name,task_des,task_status,uid,taskid):
         try:
             self.db_manager.execute_command("""UPDATE TASK 
                                                 SET task_name = ?,
                                                 task_description=?,
                                                 task_status =?,
-                                                task_seen=1,
+                                                task_seen=?,
                                                 UserID =?
                                                 WHERE taskid=?
-                                                """, (task_name,task_des,task_status,uid,taskid))
+                                                """, (task_name,task_des,task_status,self.task_seen,uid,taskid))
             print(f"Task {task_name} Updated Successfully\n") 
         except Exception as e:
             print(f"Something Went Wrong : Reason : {e}\n")
@@ -123,7 +126,7 @@ class Admin:
         except Exception as e:
             print(f"Something Went Wrong : Reason : {e}\n")
 
-    def See_all_users(self):
+    def see_all_users(self):
         try:
             users= self.db_manager.print_output("""SELECT * FROM EMPLOYEE""")
             for user in users:
@@ -147,7 +150,7 @@ class Admin:
             print(f"Something Went Wrong : Reason : {e}\n")
         
 
-    def See_all_tasks(self):
+    def see_all_tasks(self):
         try:
             tasks=self.db_manager.print_output("""SELECT * FROM TASK""")
             for task in tasks:

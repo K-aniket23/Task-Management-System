@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class Manager:
     # db connect
     # cursor
@@ -8,27 +9,39 @@ class Manager:
     # close
 
     def __init__(self):
-        self.Database= 'TMS.db'
-        self.conn = sqlite3.connect(self.Database) #check if some error
-        self.cursor = self.conn.cursor()
+        self.database = 'TMS.db'
+        try:
+            self.conn = sqlite3.connect(self.database)
+            self.cursor = self.conn.cursor()
+        except sqlite3.Error as e:
+            raise ConnectionError(f"Error connecting to the database: {e}")
 
-    # we should check for some parameters for executing the command
-    def execute_command(self,query,param=None):
-        if param:
-            self.cursor.execute(query,param)
-        else:
-            self.cursor.execute(query)
-        self.conn.commit()
+    def execute_command(self, query, param=None):
+        try:
+            if param:
+                self.cursor.execute(query, param)
+            else:
+                self.cursor.execute(query)
+            self.conn.commit()
+        except sqlite3.Error as e:
+            self.conn.rollback()  
+            raise RuntimeError(f"Error executing command: {e}")
 
-    def print_output(self,query,param=None):   
-        if param:
-            self.cursor.execute(query,param)
-        else:
-            self.cursor.execute(query)
-        return self.cursor.fetchall()
+    def print_output(self, query, param=None):
+        try:
+            if param:
+                self.cursor.execute(query, param)
+            else:
+                self.cursor.execute(query)
+            return self.cursor.fetchall()
+        except sqlite3.Error as e:
+            raise RuntimeError(f"Error fetching data: {e}")
 
     def close_connection(self):
-        self.conn.close()
+        try:
+            self.conn.close()
+        except sqlite3.Error as e:
+            raise RuntimeError(f"Error closing connection: {e}")
 
     
     
