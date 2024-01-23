@@ -42,7 +42,7 @@ class TMS:
             u, p = self.admin_manager.admin_login(username, password)
             if u == username and p == password:
                 print("Admin Login Successfully\n")
-                self.menu_stack.append(self.admin_menu)  # Append admin_menu to the stack
+                self.menu_stack.append(self.admin_menu)  
                 self.admin_menu()
         except TypeError:
             print("Please Enter a Valid Username and Password\n")
@@ -54,7 +54,7 @@ class TMS:
             u, p, id = self.user_manager.login_user(username, password)
             if (u, p, id) is not None:
                 print(f"User Login Successfully with id: {id}\n")
-                self.menu_stack.append(lambda: self.user_menu(str(id)))  # Append user_menu to the stack
+                self.menu_stack.append(lambda: self.user_menu(str(id))) 
                 self.user_manager.notification(str(id))
                 self.user_menu(str(id))
             else:
@@ -73,7 +73,7 @@ class TMS:
             print("6: Delete an Existing Task")
             print("7: See all the Available Users")
             print("8: See all the Available Tasks")
-            print("b: Back to Home!\n")
+            print("0: Back to Home!\n")
 
             choice = input("Enter any one option: ")
 
@@ -86,7 +86,7 @@ class TMS:
                 "6": self.delete_task,
                 "7": self.see_all_users,
                 "8": self.see_all_tasks,
-                "b": self.back
+                "0": self.back
             }
 
             menu_options.get(choice, self.invalid_option)()
@@ -96,14 +96,14 @@ class TMS:
             print("Enter the option ")
             print("1: Update the Status of your Task")
             print("2: Read all your Assigned Tasks")
-            print("b: Back to Home!\n")
+            print("0: Back to Home!\n")
 
             choice = input("Enter any one option: ")
 
             menu_options = {
                 "1": lambda: self.update_task_status(id),
                 "2": lambda: self.read_task(id),
-                "b": self.back
+                "0": self.back
             }
 
             menu_options.get(choice, self.invalid_option)()
@@ -229,12 +229,12 @@ class TMS:
 
     def back(self):
         try:
-            previous_menu = self.menu_stack.pop()  # Pop the top menu from the stack
+            previous_menu = self.menu_stack.pop()  
             print("Going back\n")
-            previous_menu()  # Display the previous menu
+            previous_menu()  
         except IndexError:
-            print("Cannot go back further\n")
-            self.main()  # Return to the main menu if the stack is empty
+            print("Logged Out\n")
+            self.main()  
 
 
 if __name__ == '__main__':
