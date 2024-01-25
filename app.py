@@ -3,6 +3,7 @@ from manager import Manager
 from database import DatabaseTables
 from admin import Admin
 from user import User
+from notification import Notification
 
 
 class TMS:
@@ -11,6 +12,7 @@ class TMS:
         self.table = DatabaseTables()
         self.admin_manager = Admin()
         self.user_manager = User()
+        self.notification_manager=Notification()
 
         self.table.create_table()
         self.table.create_admin()
@@ -55,7 +57,7 @@ class TMS:
             if (u, p, id) is not None:
                 print(f"User Login Successfully with id: {id}\n")
                 self.menu_stack.append(lambda: self.user_menu(str(id))) 
-                self.user_manager.notification(str(id))
+                self.notification_manager.notification(str(id))
                 self.user_menu(str(id))
             else:
                 print("Please Enter a Valid Username and Password\n")
